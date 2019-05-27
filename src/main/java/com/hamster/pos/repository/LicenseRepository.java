@@ -18,7 +18,7 @@ public interface LicenseRepository extends CrudRepository<License, Long> {
 	@Query("select new com.hamster.pos.dto.BasicDTO (l.id,l.code) from License l where l.customer.id = (:customerId)")
 	List<BasicDTO> listLicencesByCustomerId(@Param("customerId")Long customerId);
 	
-	@Query("select new com.hamster.pos.dto.LicenceDTO (l.id,l.code,l.license_key,l.status) from License l where l.customer.id = (:customerId)")
+	@Query("select new com.hamster.pos.dto.LicenceDTO (l.id,l.code,l.license_key,l.status,l.validity) from License l where l.customer.id = (:customerId)")
 	List<LicenceDTO> filterLicencesByCustomerId(@Param("customerId")Long customerId);
 	
 //	@Query("select l.id from License l")
