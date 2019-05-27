@@ -30,7 +30,8 @@ public class License {
 	private String code;
 	private String license_key;
 	private String status;
-
+	private Integer validity;
+	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "customer_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -48,6 +49,15 @@ public class License {
 		this.license_key = license_key;
 		this.status = status;
 		this.customer = customer;
+	}
+	
+	public License(String code, String license_key, String status, Customer customer, Integer validity) {
+		super();
+		this.code = code;
+		this.license_key = license_key;
+		this.status = status;
+		this.customer = customer;
+		this.validity = validity;
 	}
 
 	public Customer getCustomer() {
@@ -89,5 +99,13 @@ public class License {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public Integer getValidity() {
+		return validity;
+	}
+
+	public void setValidity(Integer validity) {
+		this.validity = validity;
+	}
+
 
 }

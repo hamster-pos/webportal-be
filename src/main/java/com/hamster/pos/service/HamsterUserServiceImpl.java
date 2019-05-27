@@ -1,5 +1,6 @@
 package com.hamster.pos.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.hamster.pos.dto.BasicDTO;
+import com.hamster.pos.dto.CustomerDTO;
 import com.hamster.pos.dto.HamsterUserDTO;
+import com.hamster.pos.dto.LicenceDTO;
 import com.hamster.pos.model.Customer;
 import com.hamster.pos.model.License;
 import com.hamster.pos.repository.CustomerRepository;
@@ -56,6 +59,18 @@ public class HamsterUserServiceImpl implements HamsterUserService {
 		li2.setCustomer(customer.get());
 		licenseRepository.save(li2);
 		
+	}
+
+	@Override
+	public Object getAllLicences() {
+		System.out.println("admin->licence");
+		ArrayList<LicenceDTO> licenceList = new ArrayList<LicenceDTO>();
+		licenseRepository.findAll().forEach(licence ->licenceList.add(new LicenceDTO(licence.getId(),licence.getCode(),licence.getLicense_key(),licence.getStatus(), licence.getValidity())));		
+		
+		if(!licenceList.isEmpty()) {
+			return new ResponseEntity<Object>(licenceList, HttpStatus.OK); 
+		}
+		return new ResponseEntity<Object>("Error while getting licences", HttpStatus.EXPECTATION_FAILED); 
 	}
 	
 

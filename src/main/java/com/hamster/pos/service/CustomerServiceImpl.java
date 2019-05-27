@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.hamster.pos.dto.BasicDTO;
 import com.hamster.pos.dto.CustomerDTO;
 import com.hamster.pos.dto.CustomerStatus;
+import com.hamster.pos.dto.LicenceDTO;
 import com.hamster.pos.dto.Roles;
 import com.hamster.pos.model.Customer;
 import com.hamster.pos.model.License;
@@ -111,7 +112,7 @@ public class CustomerServiceImpl implements CustomerService {
 			customerlist.get().forEach(customer ->searchedCustomers.add(new CustomerDTO(customer.getId(),customer.getFirstName(),customer.getLastName(),customer.getPhoneNumber(),customer.getAddress(),customer.getShopName(),customer.getEmailAddress(),customer.getStatus())));
 		}
 		else return new ResponseEntity<Object>("Customer Not Presnt : ",HttpStatus.NO_CONTENT);
-		return new ResponseEntity<Object>(customerlist, HttpStatus.OK); 
+		return new ResponseEntity<Object>(searchedCustomers, HttpStatus.OK); 
 	} 
 
 
@@ -135,7 +136,8 @@ public class CustomerServiceImpl implements CustomerService {
 			UUID uuid = UUID.randomUUID();
 			String encryptedString = AES.encrypt(String.valueOf(id.toString()+"-"+intArray[i]),uuid.toString());
 			if(customerRepository.findById(id).get() != null && !uuid.toString().equals("") && !encryptedString.equals("")) {
-				licenseRepository.save(new License(encryptedString,uuid.toString(),CustomerStatus.PENDING.toString(),customerRepository.findById(id).get()));
+				customerRepository.findById(id).get().setStatus(CustomerStatus.APPROVED.toString());
+				licenseRepository.save(new License(encryptedString,uuid.toString(),CustomerStatus.PENDING.toString(),customerRepository.findById(id).get(),intArray[i]));
 			}
 			else {
 				return new ResponseEntity<Object>("Error while generating licenses for Customer : ",HttpStatus.INTERNAL_SERVER_ERROR);
@@ -207,6 +209,16 @@ public class CustomerServiceImpl implements CustomerService {
 		else {
 			return new ResponseEntity<>("Customer Not found", HttpStatus.NOT_FOUND);
 		}
+	}
+
+
+	@Override
+	public Object filterLicencesByCustomerId(Long id) {
+		java.util.List<LicenceDTO> licenseList = licenseRepository.filterLicencesByCustomerId(id);
+		if(!licenseList.isEmpty() && licenseList.size() != 0) {
+			return new ResponseEntity<Object>(licenseList,HttpStatus.OK);
+		}
+		return new ResponseEntity<Object>("Error while fetching licenses for Customer : ",HttpStatus.EXPECTATION_FAILED);
 	}
 
 

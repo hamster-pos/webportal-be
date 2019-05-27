@@ -9,4 +9,5 @@ public interface HamsterUserService {
 
 	public Object authenticateUser(HamsterUserDTO hamsterUserDTO);
 	public void applyLicense();
+	public Object getAllLicences();
 }

@@ -18,5 +18,6 @@ public interface CustomerService {
 	public Object authenticate(CustomerDTO customerDTO);
 	public Object resetPassword(CustomerDTO customerDTO);
 	public Object searchCustomers(String searchCustomer);
+	public Object filterLicencesByCustomerId(Long id);
 //	public Long updatePassword(User userDTO);
 }

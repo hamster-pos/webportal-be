@@ -86,5 +86,12 @@ public class CustomerController {
 		return (ResponseEntity<Object>) customerServiceImpl.getLicenseDetailsForCustomer(custmerId);
 		
 	}
+	
+	@GetMapping(value = "/customer/licenses/filter/{custmerId}")
+	public ResponseEntity<Object> filterLicencesByCustomerId(@PathVariable Long custmerId) {
+		System.out.println("id"+custmerId);
+		return (ResponseEntity<Object>) customerServiceImpl.filterLicencesByCustomerId(custmerId);
+		
+	}
 
 }

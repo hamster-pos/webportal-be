@@ -40,8 +40,15 @@ public class UserController {
 	@GetMapping(value = "/get")
 	public String get() {
 		System.out.println("test");
-		hamsterUserService.applyLicense();
+		//hamsterUserService.applyLicense();
 		return "test";
+
+	}
+	
+	@GetMapping(value = "/admin/licences")
+	public Object getAllLicences() {
+		System.out.println("getAllLicences");
+		return hamsterUserService.getAllLicences();
 
 	}
 //
